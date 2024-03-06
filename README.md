@@ -1,15 +1,24 @@
+# Embedded Code For Mechatronics
+
+Code for robotic hardware will be placed here
+
+## Current Supported Platforms
+
+    Teensy4.1
+    RP2040
+    SAM4E
+
 ## Using USB Protocol 
 
     for (;;)
     {
-        const byte_t init = read_byte();
-        if (init == INIT_BYTE)
+        const int byte = udi_cdc_getc();
+        if (byte == INIT_BYTE)
         {
-            const byte_t meta_flags_byte = read_byte();
-            const MetaFlags meta_flags = EXTRACT_META_FLAGS(meta_flags_byte);
-            const byte_t msg_size = meta_flags.MSG_SIZE - 2;
-            byte_t buffer[msg_size] = {0};
-            read_buffer(buffer, msg_size);
-            HANDLE_MESSAGE(buffer);
+            const byte_t meta_flags = udi_cdc_getc();
+            const byte_t msg_size = GET_MESSAGE_SIZE(meta_flags); 
+            udi_cdc_read_buf(buffer, msg_size);
+            HANDLE_MESSAGE(buffer, msg_size);
         }   
+        CLEAR_BUFFER(buffer, USB_PACKET_SIZE_BYTES);
     }
