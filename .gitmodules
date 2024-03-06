@@ -1,6 +1,8 @@
 [submodule "sam/usb_protocol"]
 	path = sam/usb_protocol
 	url = https://github.com/Package-Repository/usb_protocol
+	branch = main
 [submodule "rp2040/usb_protocol"]
 	path = rp2040/usb_protocol
 	url = https://github.com/Package-Repository/usb_protocol
+	branch = main
