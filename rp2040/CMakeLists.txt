@@ -30,14 +30,14 @@ target_sources(
         ${PROJECT} PUBLIC
         ${MECH_USB_SOURCES}
         ${CMAKE_CURRENT_SOURCE_DIR}/main.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/usb_descriptors.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
 )
 
 target_include_directories(
         ${PROJECT} PUBLIC
         ${MECH_USB_INCLUDES}
         ${CMAKE_CURRENT_SOURCE_DIR}
-        /usr/include/c++/11
+        include
 )
 
 target_link_libraries(
