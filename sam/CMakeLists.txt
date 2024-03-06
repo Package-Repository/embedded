@@ -8,6 +8,22 @@ set(FPU "softfp")
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I/usr/local/include")
 
+set (MECH_USB_SOURCES
+    usb_protocol/src/parser/usb_parse.c
+    usb_protocol/src/parser/usb_flags.c
+    usb_protocol/src/actions/usb_actions.c
+)
+
+set (MECH_USB_INCLUDES
+    src/utils/include
+    src/main/include
+    usb_protocol/include
+    usb_protocol/include/parser
+    usb_protocol/include/subtopics
+    usb_protocol/include/actions
+    usb_protocol/util
+)
+
 add_executable(
     ${PROJECT_NAME}
     src/ASF/common/services/sleepmgr/sam/sleepmgr.c 
@@ -38,9 +54,7 @@ add_executable(
     src/main/src/usb_timer.c
     src/main/usb_main.c
 
-    usb_protocol/src/parser/usb_parse.c
-    usb_protocol/src/parser/usb_flags.c
-    usb_protocol/src/actions/usb_actions.c
+    ${MECH_USB_SOURCES}
 )
 
 include_directories(
@@ -106,16 +120,7 @@ include_directories(
     src/ASF/thirdparty/CMSIS/Lib/GCC/ 
     src/config/
     src/utils/include
-)
-
-include_directories(
-    src/utils/include
-    src/main/include
-    usb_protocol/include
-    usb_protocol/include/parser
-    usb_protocol/include/subtopics
-    usb_protocol/include/actions
-    usb_protocol/util
+    ${MECH_USB_INCLUDES}
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE

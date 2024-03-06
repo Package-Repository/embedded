@@ -2,31 +2,43 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-#include(/home/Gemelli/Code/pico/pico-sdk/lib/tinyusb/hw/bsp/family_support.cmake)
-include($ENV{PICO_SDK_PATH}/lib/tinyusb/hw/bsp/family_support.cmake)
-
-# gets PROJECT name for the example (e.g. <BOARD>-<DIR_NAME>)
+set(PICO_SDK_PATH ~/pico/pico-sdk)
+include(${PICO_SDK_PATH}/lib/tinyusb/hw/bsp/family_support.cmake)
 family_get_project_name(PROJECT ${CMAKE_CURRENT_LIST_DIR})
-
 project(${PROJECT})
-
-# Checks this example is valid for the family and initializes the project
 family_initialize_project(${PROJECT} ${CMAKE_CURRENT_LIST_DIR})
+
+set (MECH_USB_SOURCES
+    usb_protocol/src/parser/usb_parse.c
+    usb_protocol/src/parser/usb_flags.c
+    usb_protocol/src/actions/usb_actions.c
+)
+
+set (MECH_USB_INCLUDES
+    src/utils/include
+    src/main/include
+    usb_protocol/include
+    usb_protocol/include/parser
+    usb_protocol/include/subtopics
+    usb_protocol/include/actions
+    usb_protocol/util
+)
 
 add_executable(${PROJECT})
 
-# Example source
 target_sources(
         ${PROJECT} PUBLIC
+        ${MECH_USB_SOURCES}
         ${CMAKE_CURRENT_SOURCE_DIR}/main.c
         ${CMAKE_CURRENT_SOURCE_DIR}/usb_descriptors.c
-        )
+)
 
-# Example include
 target_include_directories(
         ${PROJECT} PUBLIC
+        ${MECH_USB_INCLUDES}
         ${CMAKE_CURRENT_SOURCE_DIR}
-        )
+        /usr/include/c++/11
+)
 
 target_link_libraries(
         ${PROJECT} PUBLIC
@@ -35,10 +47,6 @@ target_link_libraries(
         hardware_i2c
         hardware_timer
         hardware_pwm
-        )
+)
 
-
-
-# Configure compilation flags and libraries for the example... see the corresponding function
-# in hw/bsp/FAMILY/family.cmake for details.
 family_configure_device_example(${PROJECT})
